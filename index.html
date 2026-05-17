@@ -10,8 +10,8 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Noto Sans KR', sans-serif;
-    background: #1a1a1a;
-    color: #e8e8e8;
+    background: #f5f5f7;
+    color: #2a2a2a;
     min-height: 100vh;
     padding: 24px 16px;
   }
@@ -25,7 +25,7 @@
   @media (max-width: 1100px) { .container { grid-template-columns: 1fr; } }
   header {
     grid-column: 1 / -1;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #ddd;
     padding-bottom: 16px;
     margin-bottom: 4px;
   }
@@ -33,22 +33,24 @@
     font-weight: 900;
     font-size: 22px;
     letter-spacing: -0.02em;
+    color: #1a1a1a;
   }
   header h1 span { color: #c8302a; }
   header p {
     margin-top: 6px;
     font-size: 12px;
-    color: #888;
+    color: #666;
   }
   .panel {
-    background: #232323;
-    border: 1px solid #2e2e2e;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 20px;
     position: sticky;
     top: 16px;
     max-height: calc(100vh - 32px);
     overflow-y: auto;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .panel h2 {
     font-size: 13px;
@@ -56,44 +58,45 @@
     color: #c8302a;
     margin-bottom: 12px;
     padding-bottom: 6px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #eee;
   }
   .field { margin-bottom: 12px; }
   .field label {
     display: block;
     font-size: 11px;
-    color: #aaa;
+    color: #666;
     margin-bottom: 4px;
     font-weight: 500;
   }
   .field input[type=text], .field input[type=date], .field select {
     width: 100%;
-    background: #1a1a1a;
-    border: 1px solid #383838;
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
     border-radius: 4px;
     padding: 7px 9px;
-    color: #e8e8e8;
+    color: #1a1a1a;
     font-size: 12.5px;
     font-family: inherit;
   }
-  .field input:focus, .field select:focus { outline: none; border-color: #c8302a; }
+  .field input:focus, .field select:focus { outline: none; border-color: #c8302a; box-shadow: 0 0 0 2px rgba(200,48,42,0.1); }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .checkgroup {
     display: flex; flex-direction: column; gap: 6px;
-    background: #1a1a1a; padding: 9px; border-radius: 4px;
-    border: 1px solid #383838;
+    background: #fafafa; padding: 9px; border-radius: 4px;
+    border: 1px solid #e5e5e5;
   }
   .checkgroup label {
     display: flex; align-items: center; gap: 8px;
-    font-size: 12px; color: #ddd; cursor: pointer; margin: 0;
+    font-size: 12px; color: #333; cursor: pointer; margin: 0;
   }
   .checkgroup input { accent-color: #c8302a; }
   .stamp-upload {
-    background: #1a1a1a; border: 1px dashed #555;
+    background: #fafafa; border: 1px dashed #bbb;
     border-radius: 4px; padding: 12px; text-align: center;
     cursor: pointer; transition: border-color 0.2s; font-size: 12px;
+    color: #444;
   }
-  .stamp-upload:hover { border-color: #c8302a; }
+  .stamp-upload:hover { border-color: #c8302a; background: #fff8f8; }
   .stamp-upload input { display: none; }
   .stamp-upload .preview {
     display: flex; align-items: center; gap: 10px;
@@ -109,12 +112,12 @@
     font-family: inherit; transition: background 0.2s;
   }
   button:hover { background: #a82420; }
-  button.secondary { background: #444; }
+  button.secondary { background: #6a6a6a; }
   button.secondary:hover { background: #555; }
 
   /* ====================== 신청서 미리보기 - 픽셀 단위 재현 ====================== */
   .preview-wrap {
-    background: #d0d0d0;
+    background: #e8e8eb;
     border-radius: 8px;
     padding: 16px;
     overflow-x: auto;
@@ -219,16 +222,22 @@
   }
   .stamp-img {
     position: absolute;
-    width: 36px;
-    height: 36px;
-    top: -8px;
-    right: -28px;
+    width: 38px;
+    height: 38px;
+    top: -10px;
+    right: -50px;
     z-index: 10;
-    opacity: 0.88;
+    opacity: 0.9;
     cursor: move;
     user-select: none;
     -webkit-user-drag: none;
     transition: box-shadow 0.15s;
+  }
+  /* 위임장 테이블 내부 도장은 셀 좁아서 따로 조정 */
+  .delegate-tbl .stamp-img {
+    right: auto;
+    left: 60px;
+    top: -8px;
   }
   .stamp-img:hover {
     outline: 2px dashed rgba(200,48,42,0.6);
@@ -462,7 +471,7 @@
       <button onclick="downloadPDF()">📥 PDF 다운로드</button>
       <button class="secondary" onclick="window.print()">🖨️ 인쇄</button>
     </div>
-    <div class="small-note" style="margin-top:10px;">
+    <div class="small-note" style="margin-top:10px; color:#888;">
       ※ 도장의 출처와 사용권한 확인은 사용자(세무대리인) 책임입니다.
     </div>
   </aside>
@@ -470,7 +479,7 @@
   <main class="preview-wrap">
     <div class="drag-hint" id="dragHint">💡 도장을 드래그해서 위치를 조정할 수 있습니다</div>
     <div style="text-align:right; margin-bottom:8px;">
-      <button onclick="resetStampPositions()" class="secondary" style="background:#555; max-width:180px; padding:6px 12px; font-size:11.5px;">↺ 도장 위치 초기화</button>
+      <button onclick="resetStampPositions()" class="secondary" style="background:#6a6a6a; max-width:180px; padding:6px 12px; font-size:11.5px;">↺ 도장 위치 초기화</button>
     </div>
     <div class="form-doc" id="formDoc">
 

@@ -448,23 +448,18 @@
       <div class="field"><label>연락처</label><input type="text" id="d_tel" value="032-321-4521" oninput="render()"></div>
     </div>
 
-    <h2>6. 도장 이미지</h2>
+    <h2>6. 신청인 도장</h2>
     <div class="field">
-      <label>신청인 도장</label>
+      <label>신청인 도장 (PNG/JPG)</label>
       <label class="stamp-upload" for="stamp_applicant">
         <input type="file" id="stamp_applicant" accept="image/*" onchange="loadStamp(event,'applicant')">
         <div>📌 신청인 도장 업로드</div>
         <div class="preview" id="prev_applicant"></div>
-        <small>흰 배경 자동 제거</small>
+        <small>흰/검정 배경 자동 제거 · 빨간 인영 추출</small>
       </label>
     </div>
-    <div class="field">
-      <label>위임받은 사람 도장</label>
-      <label class="stamp-upload" for="stamp_delegate">
-        <input type="file" id="stamp_delegate" accept="image/*" onchange="loadStamp(event,'delegate')">
-        <div>📌 위임받은 사람 도장 업로드</div>
-        <div class="preview" id="prev_delegate"></div>
-      </label>
+    <div class="small-note" style="margin-top:4px; color:#888; padding:8px 10px; background:#fafafa; border-radius:4px; border:1px solid #eee;">
+      ✓ 위임받은 사람 도장(원제우세무사)은 자동으로 적용됩니다
     </div>
 
     <div class="btn-row">
@@ -625,7 +620,8 @@
 </div>
 
 <script>
-const stamps = { applicant: null, delegate: null };
+const EMBEDDED_DELEGATE_STAMP = 'data:image/png;base64,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';
+const stamps = { applicant: null, delegate: EMBEDDED_DELEGATE_STAMP };
 
 function loadStamp(event, who) {
   const file = event.target.files[0];
